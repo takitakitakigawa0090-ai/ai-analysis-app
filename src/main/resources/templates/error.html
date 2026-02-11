@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>システムエラー</title>
+    <link rel="stylesheet" th:href="@{/css/aiapp-style.css}">
+    <link rel="icon" th:href="@{/favicon.ico?v=3}" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container main-layout">
+        <h2 class="section-title" style="text-align: center; left: 0px;" >SYSTEM ERROR</h2>
+        
+        <div class="result-box" style="text-align: center;">
+            <p>申し訳ありません。システムエラーが発生しました。</p>
+            <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
+        </div>
+        
+        <div class="submit-area">
+            <a th:href="@{/}" class="result-button" style="text-decoration: none;">開始画面へ戻る</a>
+        </div>
+    </div>
+</body>
+</html>

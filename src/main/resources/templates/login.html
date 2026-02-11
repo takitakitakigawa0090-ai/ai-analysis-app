@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<script>
+    function disableLoginButton(event, element) {
+        // すでにクリック済み（処理中）なら何もしない
+        if (element.disabled) {
+            event.preventDefault();
+            return false;
+        }
+
+        // 少し遅延させてから無効化（クリックイベントの完了を待つため）
+        setTimeout(() => {
+            element.disabled = true;
+        }, 1);
+        
+        // クラスを追加して「処理中」の状態にする
+        element.classList.add('is-loading');
+
+        // 文字列を変更してフィードバックを出す
+        element.innerText = "分析画面移動中... ";
+
+        // スタイルでクリックを物理的に無効化
+        element.style.pointerEvents = 'none';
+        element.style.opacity = '0.6';
+    }
+
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>文章カテゴライズ開始画面</title>
+    <link rel="stylesheet" th:href="@{/css/aiapp-style.css}">
+    <link rel="icon" th:href="@{/favicon.ico?v=3}" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">文章カテゴライザー</h1>
+        <form th:action="@{/oauth2/authorization/google}" method="get" style="display: inline;">
+            <button type="submit" class="login-button login-button-area" onclick="disableLoginButton(event, this)">
+                文章をカテゴライズ
+            </button>
+        </form>
+    </div>
+    <script th:src="@{/js/aiapp-script.js}"></script>
+</body>
+
+</html>

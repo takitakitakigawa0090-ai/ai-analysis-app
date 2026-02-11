@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: ai-analysis-app
+    ports:
+      - "8080:8080"
+    environment:
+      # Spring Bootが認識できる形式に変換して渡す
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}

@@ -1,0 +1,267 @@
+/* style.css */
+/* 全体のリセットと背景 */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* 画面中央に配置するためのコンテナ */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    padding-top: 15vh;
+    box-sizing: border-box;
+}
+
+/* 文章カテゴライザー: タイトルのスタイル */
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 60px;
+    letter-spacing: 0.1em;
+}
+
+/* 文章カテゴライズ: ボタン */
+.login-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: #bdbdbd;
+    color: #000;
+    text-decoration: none;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ボタンエリアのマージン調整 */
+.login-button-area {
+    margin-top: auto;
+    margin-bottom: 30vh;
+}
+
+/* ホバー（マウスを乗せた時）の演出 */
+.login-button:hover {
+    background-color: #a9a9a9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* 処理中のボタンの見た目 */
+.login-button.is-loading {
+    cursor: wait;
+    /* カーソルを待機状態に */
+    background-color: #d3d3d3;
+    box-shadow: none;
+    transform: none;
+}
+
+/* メイン画面用のレイアウト調整 */
+.main-layout {
+    justify-content: flex-start;
+    padding-top: 5vh;
+}
+
+/* セクションタイトル */
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 80%;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+    letter-spacing: 0.05em;
+    position: relative;
+    left: -70px;
+}
+
+/* 分析フォーム全体のスタイル */
+.analysis-form {
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* テキストエリアのスタイル */
+.input-field {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    font-size: 1rem;
+    border: 2px solid #333;
+    border-radius: 4px;
+    resize: none;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+/* ボタンエリア */
+.submit-area {
+    display: flex;
+    justify-content: center;
+}
+
+/* 結果表示ボタン */
+.result-button {
+    width: 100px;
+    padding: 8px 0;
+    min-width: 120px;
+    background-color: #bdbdbd;
+    border: 1px solid #000000;
+    color: #000000;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+/* 分析中 */
+#loadingOverlay {
+    display: block;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(69, 46, 98, 0.8);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+/* スピナー */
+.large-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #989998;
+    border-top: 6px solid #35424b;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* スピナーのアニメーション */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 結果表示全体のコンテナ */
+.result-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 40px auto;
+    text-align: left;
+}
+
+/* 結果タイトル */
+.result-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 各結果ボックスのスタイル */
+.result-box {
+    margin-bottom: 30px;
+}
+
+/* ラベルスタイル */
+.label {
+    font-size: 0.9rem;
+    color: #000000;
+    margin-bottom: 8px;
+}
+
+/* 内容表示エリア */
+.content-display {
+    background-color: #e3f2fd;
+    padding: 20px;
+    border-radius: 4px;
+    min-height: 60px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* カテゴリ部分のエリア調整 */
+.category-area {
+    margin-top: 20px;
+}
+
+/* カテゴリ部分：青イメージ */
+.category-badge {
+    display: inline-block;
+    background-color: #5da0d7;
+    color: white;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* エラーメッセージのスタイル */
+.error-message {
+    color: #d32f2f;
+    background-color: #fdecea;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    border-left: 5px solid #d32f2f;
+}
+
+/* モーダルダイアログのオーバーレイ */
+.modal-overlay {
+    display: none;
+    /* 初期状態は非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* モーダルコンテンツのスタイル */
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+}
+
+/* モーダルボタン  */
+.modal-button {
+    margin-top: 20px;
+    padding: 10px 30px;
+    background-color: #5da0d7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

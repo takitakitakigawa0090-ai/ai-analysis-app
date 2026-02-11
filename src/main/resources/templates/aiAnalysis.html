@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>文章カテゴライズ画面</title>
+    <link rel="stylesheet" th:href="@{/css/aiapp-style.css}">
+    <link rel="icon" th:href="@{/favicon.ico?v=3}" type="image/x-icon">
+    <style>
+    </style>
+</head>
+<script>
+
+    // フォーム送信時に呼ばれる関数
+    async function showOverlay(event) {
+        if (!event) return;
+        event.preventDefault();
+        try {
+            // サーバーにトークンの有効性を確認するリクエストを送る
+            const response = await fetch('/api/auth/check');
+            if (!response.ok) {
+                // トークンが無効なら、自作ダイアログを表示して送信を中止
+                event.preventDefault();
+                document.getElementById('customDialog').style.display = 'flex';
+                return;
+            }
+            // トークンが有効なら、ぐるぐるを表示して送信を継続
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+            }
+
+            // 送信ボタンを無効化して、テキストを変更
+            const btn = document.getElementById('submitBtn');
+            if (btn) {
+                btn.disabled = true; // ボタンを無効化
+                btn.innerText = "送信中...";
+            }
+
+            // フォームを送信
+            event.target.submit();
+
+        } catch (error) {
+            console.error("通信エラー:", error);
+            // 「ぐるぐる」が出ていれば消す
+            document.getElementById('loadingOverlay').style.display = 'none';
+            throw new Error('通信エラー');
+        }
+    }
+    // ボタンを押した時のリダイレクト処理
+    function closeModalAndRedirect() {
+        document.getElementById('customDialog').style.display = 'none';
+        window.location.href = "/login";
+    }
+
+</script>
+
+<body>
+    <div class="container main-layout">
+        <div id="customDialog" class="modal-overlay">
+            <div class="modal-content">
+                <h3>有効期限切れ通知</h3>
+                <p id="modalMessage">アクセストークンの有効期限が切れました。</p>
+                <button onclick="closeModalAndRedirect()" class="modal-button">OK</button>
+            </div>
+        </div>
+        <h2 class="section-title">文章を入力してAIに分析してもらいましょう（60文字以内）</h2>
+        <form th:action="@{/analyze}" method="post" class="analysis-form" id="aiForm" onsubmit="showOverlay(event)">
+            <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
+            <textarea name="aiInput" class="input-field" id="aiInput" maxlength="60" required
+                placeholder="ここに文章を入力してください..."></textarea>
+            <div class="submit-area">
+                <button type="submit" id="submitBtn" class="result-button">
+                    分析
+                </button>
+            </div>
+            <div id="loadingOverlay" class="loadingOverlay" style="display: none;">
+                <div class="large-spinner"></div>
+                <p style="margin-top: 20px; font-weight: bold; color: #ffffff;">AIが回答を生成中...</p>
+            </div>
+        </form>
+
+        <div th:if="${analysisResult}" class="result-container">
+            <h3 class="result-title">分析結果</h3>
+            <div class="result-box">
+                <p class="label">入力内容</p>
+                <div class="content-display" th:text="${userInput}">入力した内容を表示</div>
+            </div>
+            <div class="category-area">
+                <p class="label">カテゴリー</p>
+                <div class="category-badge" th:text="${analysisResult}">テクノロジー</div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/aiapp-script.js}"></script>
+</body>
+
+</html>
