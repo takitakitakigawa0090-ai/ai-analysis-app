@@ -57,7 +57,7 @@ public class AiService {
 		String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
 				+ apiKey;
 		try {
-			String systemPrompt = "Translate input to English, then pick one category from [スポーツ, テクノロジー, 政治, 経済, エンターテイメント, 医療, 教育, ビジネス, ニュース, その他]. Answer only the word. Input: ";
+			String systemPrompt = "Translate input to English, then pick one from [スポーツ, テクノロジー, 政治, 経済, エンターテイメント, 医療, 教育, ビジネス, ニュース, その他]. Output 1 word only. Input:";
 			String combinedInput = systemPrompt + userInput;
 
 			// JSONリクエストボディの作成
