@@ -1,4 +1,5 @@
 AI Analysis App
+
 入力されたテキストを AI（Gemini API）が分析し、最適なカテゴリーに分類する Spring Boot アプリケーションです。
 
 🌟 特徴
