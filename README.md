@@ -27,6 +27,8 @@ AI Analysis App
 
 🚀 クイックスタート
 
+　
+
 　1. リポジトリをクローン
  
 
@@ -60,11 +62,11 @@ AI Analysis App
 
 　　Plaintext
 
-　　GOOGLE_API_KEY=あなたのAPIキー
+　　GOOGLE_API_KEY="あなたのAPIキー"
 
-　　GOOGLE_CLIENT_ID=あなたのクライアントID
+　　GOOGLE_CLIENT_ID="あなたのクライアントID"
 
-　　GOOGLE_CLIENT_SECRET=あなたのクライアントシークレット
+　　GOOGLE_CLIENT_SECRET="あなたのクライアントシークレット"
 
 
 　3. アプリの起動
