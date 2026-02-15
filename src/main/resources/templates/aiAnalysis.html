@@ -18,10 +18,17 @@
         try {
             // サーバーにトークンの有効性を確認するリクエストを送る
             const response = await fetch('/api/auth/check');
-            if (!response.ok) {
+            if (response.status === 401) {
                 // トークンが無効なら、自作ダイアログを表示して送信を中止
                 event.preventDefault();
                 document.getElementById('customDialog').style.display = 'flex';
+                return;
+            }
+            // 「401（認証切れ）ではないが、成功（200）でもないエラー」の場合も、エラー処理を行う
+            if (!response.ok) {
+                // その他のエラー処理
+                console.error("System Error");
+                event.preventDefault();
                 return;
             }
             // トークンが有効なら、ぐるぐるを表示して送信を継続

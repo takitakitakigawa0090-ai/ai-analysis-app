@@ -1,6 +1,8 @@
 package com.aiapps.aiapp.service;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -29,9 +31,9 @@ public class AiService {
 	// ロガーの定義
 	private static final Logger logger = LoggerFactory.getLogger(AiService.class);
 
-	// application.properties で定義したキー名で参照 
-    @Value("${google.api.key}")
-    private String apiKey; 
+	// application.properties で定義したキー名で参照
+	@Value("${google.api.key}")
+	private String apiKey;
 
 	// HttpClientは使い回す（リソースの節約とjava:S2095対策）
 	// Java 21の仮想スレッドを使用する場合も、共通のクライアントを使う
@@ -57,7 +59,7 @@ public class AiService {
 		String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
 				+ apiKey;
 		try {
-			String systemPrompt = "Translate input to English, then pick one from [スポーツ, テクノロジー, 政治, 経済, エンターテイメント, 医療, 教育, ビジネス, ニュース, その他]. Output 1 word only. Input:";
+			String systemPrompt = "Task: Classify into [スポーツ, テクノロジー, 政治, 経済, エンターテイメント, 医療, 教育, ビジネス, ニュース, その他]. Rule: Think in English, output ONLY 1 Japanese word. NO English. Input:";
 			String combinedInput = systemPrompt + userInput;
 
 			// JSONリクエストボディの作成
@@ -73,11 +75,11 @@ public class AiService {
 
 			// POSTリクエストの構築
 			HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("Content-Type", "application/json")
-                    .timeout(Duration.ofSeconds(30)) // タイムアウト設定	
-                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8))
-                    .build();
+					.uri(URI.create(apiUrl))
+					.header("Content-Type", "application/json")
+					.timeout(Duration.ofSeconds(30)) // タイムアウト設定
+					.POST(HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8))
+					.build();
 
 			// 送信して結果を受け取る
 			HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
@@ -90,7 +92,7 @@ public class AiService {
 				// 正常に応答が返ってきた場合
 			} else if (response.statusCode() == 200) {
 				// JSONをパース
-				JsonNode root = MAPPER.readTree(response.body()); 
+				JsonNode root = MAPPER.readTree(response.body());
 
 				// 必要なデータを抽出
 				// 構造: candidates[0] -> content -> parts[0] -> text
@@ -114,8 +116,12 @@ public class AiService {
 						"APIエラー : response.statusCode()= " + response.statusCode() + ", response.body()= "
 								+ response.body());
 			}
-
+		} catch (ConnectException | SocketTimeoutException e) {
+			throw new AiAppException("CONNECT_ERROR");
 		} catch (IOException e) {
+			if (e.getMessage().contains("EOF reached")) {
+				throw new AiAppException("CONNECT_ERROR");
+			}
 			throw new AiAppException("システムエラー: " + e);
 		} catch (InterruptedException e) {
 			// ログを出す
