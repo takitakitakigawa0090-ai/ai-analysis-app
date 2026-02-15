@@ -45,10 +45,10 @@ public class AiAppExceptionHandler {
 
         if (ex.getMessage().contains(VALUE_TOO_MANY_REQUESTS)) {
 
-            logger.warn("現在AIが混み合っています。1分ほど置いてから再度お試しください。エラー内容:{} ", ex.getMessage());
+            logger.warn("現在AIが混み合っています。時間をおいて置いてから再度お試しください。エラー内容:{} ", ex.getMessage());
 
             // ユーザーへのメッセージを設定
-            model.addAttribute(ERROR_ATTRIBUTE, "現在AIが混み合っています。1分ほど置いてから再度お試しください。");
+            model.addAttribute(ERROR_ATTRIBUTE, "現在AIが混み合っています。時間をおいて置いてから再度お試しください。");
 
         } else if (ex.getMessage().contains(VALUE_CONNECT_ERROR)) {
             logger.warn("外部サービスへの接続に失敗しました。時間をおいて再度お試しください。");
